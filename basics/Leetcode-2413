@@ -1,0 +1,9 @@
+class Solution {
+    public int smallestEvenMultiple(int n) {
+        // TC O(1)
+        if(n%2==0){
+            return n;
+        }
+        return n * 2;
+    }
+}
