@@ -1,0 +1,19 @@
+Try Every Question with void based (Stack Build) and return based (Stack Fall)
+1. Array Find out Max Number 
+a) void based
+static void maxInArray(int arr[], int index, int max){
+}
+B) return based
+
+static int maxInArray(int arr[], int index){
+}
+
+
+2. Palindrome Number
+e.g 151 
+
+3. String reverse - Leetcode 344
+
+4. Leetcode 231
+
+5. Count Even and Odd Numbers in 1 to 100 List.
