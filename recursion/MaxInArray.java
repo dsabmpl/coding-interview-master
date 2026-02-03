@@ -1,27 +1,30 @@
-package recursion;
-
 public class MaxInArray {
 
-    static int maxInArray(int arr[], int index) {
-
+    static int max(int arr[], int index) {
+        if (index == arr.length) {
+            return Integer.MIN_VALUE;
+        }
+        int maxValue = max(arr, index + 1);
+        if (arr[index] > maxValue) {
+            maxValue = arr[index];
+        }
+        return maxValue;
     }
 
-    static void maxInArray(int arr[], int index, int max) {
+    static void max(int arr[], int index, int maxValue) {
         if (arr.length == index) {
-            System.out.println("Max " + max);
+            System.out.println(maxValue);
             return;
         }
-        if (arr[index] > max) {
-            max = arr[index];
+        if (arr[index] > maxValue) {
+            maxValue = arr[index];
         }
-        maxInArray(arr, index + 1, max);
+        max(arr, index + 1, maxValue);
     }
 
     public static void main(String[] args) {
-        int arr[] = { 10, 5, 100, 9, 2, 40 };
-        maxInArray(arr, 0, 0);
-        int max = maxInArray(arr, 0);
-        System.out.println(max);
-
+        int arr[] = { 90, 1, 5, 10, 6, 10 };
+        max(arr, 0, 0);
+        System.out.println(max(arr, 0));
     }
 }
