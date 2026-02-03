@@ -1,0 +1,48 @@
+public class Question1 {
+
+    // Hello
+    // search - l
+    // O/p Heo 
+    static void searchAndRemove(String str, char search){
+
+    }
+
+    // Hello
+    // search l
+    // replce w 
+    //o/p Hewwo
+
+    static void replaceAString(String str, char search 
+        ,char replace){
+
+    }
+
+    static void palindrome(int org, int dup, int reverse){
+
+    }
+
+    public void sumOfDigit(int num , int sum){
+
+    }
+    // 123 = 1 + 2 + 3 = 6
+    public int sumOfDigit(int num){
+
+    }
+
+    static String reverseAString(String str){
+
+    }
+    // Hint : using substring and charAt
+    static void reverseAString(String str, String result){
+
+    }
+
+    static boolean isSortedArray(int arr[], int index) {
+
+    }
+
+    public static void main(String[] args) {
+        int arr[] = { 10, 9, 20, 50, 4 };
+        isSortedArray(null, 0);
+    }
+}
