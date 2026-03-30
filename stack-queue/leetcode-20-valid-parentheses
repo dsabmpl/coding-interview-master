@@ -1,0 +1,23 @@
+class Solution {
+    boolean isMatchPair(char opening, char closing){
+        return (opening =='(' && closing ==')')
+        || (opening =='[' && closing ==']')
+        || (opening =='{' && closing =='}');
+    }
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        // Step -1 Traverse the String 
+        for(char bracket : s.toCharArray()){
+            // Step-2 check opening
+            if(bracket == '(' || bracket == '[' || bracket =='{'){
+                stack.push(bracket);
+            }
+            // closing bracket
+            else if(stack.isEmpty() || 
+            !isMatchPair(stack.pop(), bracket)){
+                return false; // Invalid Expression
+            }
+        }
+        return stack.isEmpty();
+    }
+}
