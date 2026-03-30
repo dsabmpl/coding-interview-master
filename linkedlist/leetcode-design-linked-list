@@ -1,0 +1,245 @@
+// Generic node
+// class Node<T>{
+//     T val;
+//     Node<T> next;
+//     Node(T val){
+//         this.val = val;
+//     }
+// }
+// Node<Integer> node = new Node<>(10);
+
+
+//Doubly LinkedList
+
+class Node{
+    int val;
+    Node next;
+    Node prev; // For DLL
+    Node(int val){
+        this.val = val;
+    }
+}
+class MyLinkedList {
+
+    
+
+    Node head; // point to the first node (default value null)
+    Node tail ; // point to the last node (default value null)
+    int size;
+    public MyLinkedList() {
+        size = 0;
+    }
+    
+    public int get(int index) {
+        if(head ==null || index>=size){
+            return -1;
+        }
+        Node temp = head;
+        for(int i = 0; i<index; i++){
+            temp = temp.next;
+        }
+        return temp.val;
+    }
+    
+    public void addAtHead(int val) {
+        Node node = new Node(val); // create a new node
+        size++;
+        if(head == null){
+            // LL is Empty
+            tail = head = node;
+        }
+        else{
+            node.next= head;
+            head.prev = node; // For DLL
+            head = node;
+        }
+    }
+    
+    public void addAtTail(int val) {
+        Node node = new Node(val); // create a new node
+        size++;
+        if(head == null){
+            // LL is Empty
+            tail = head = node;
+        }
+        else{
+            tail.next = node;
+            node.prev = tail;// For DLL
+            tail = node;
+        }
+    }
+    
+    public void addAtIndex(int index, int val) {
+        if(index>size){
+            return ;
+        }
+        if(index ==0){
+            addAtHead(val);
+            return ;
+        }
+        if(index == size){
+            addAtTail(val);
+            return ;
+        }
+        Node node = new Node(val);
+        size++;
+        Node temp = head;
+        for(int i = 0; i<index-1; i++){
+            temp = temp.next;
+        }
+        node.prev = temp; // For DLL
+        node.next = temp.next;
+        temp.next.prev = node; // For DLL
+        temp.next = node;
+    }
+    
+    public void deleteAtIndex(int index) {
+        if(head == null || index>=size){
+            return ;
+        }
+        if(index ==0){
+            head = head.next;
+            if(head == null){
+                tail = head;
+            }
+            else{
+                head.prev = null;// For DLL
+            }
+            size--;
+            return;
+        }
+        Node temp = head;
+        for(int i = 0; i<index-1; i++){
+            temp = temp.next;
+        }
+        if(temp.next == tail){
+            tail = temp;
+        }
+        else{
+        temp.next = temp.next.next;
+        temp.next.prev = temp; // // For DLL
+        }
+        size--;
+    }
+}
+
+
+
+// class Node{
+//     int val;
+//     Node next;
+//     Node(int val){
+//         this.val = val;
+//     }
+// }
+// class MyLinkedList {
+
+//     static {
+//         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+//             try (FileWriter writer = new FileWriter("display_runtime.txt")) {
+//                 writer.write("0");
+//             } catch (IOException e) {
+//                 e.printStackTrace();
+//             }
+//         }));
+//     }
+
+//     Node head; // point to the first node (default value null)
+//     Node tail ; // point to the last node (default value null)
+//     int size;
+//     public MyLinkedList() {
+//         size = 0;
+//     }
+    
+//     public int get(int index) {
+//         if(head ==null || index>=size){
+//             return -1;
+//         }
+//         Node temp = head;
+//         for(int i = 0; i<index; i++){
+//             temp = temp.next;
+//         }
+//         return temp.val;
+//     }
+    
+//     public void addAtHead(int val) {
+//         Node node = new Node(val); // create a new node
+//         size++;
+//         if(head == null){
+//             // LL is Empty
+//             tail = head = node;
+//         }
+//         else{
+//             node.next= head;
+//             head = node;
+//         }
+//     }
+    
+//     public void addAtTail(int val) {
+//         Node node = new Node(val); // create a new node
+//         size++;
+//         if(head == null){
+//             // LL is Empty
+//             tail = head = node;
+//         }
+//         else{
+//             tail.next = node;
+//             tail = node;
+//         }
+//     }
+    
+//     public void addAtIndex(int index, int val) {
+//         if(index>size){
+//             return ;
+//         }
+//         if(index ==0){
+//             addAtHead(val);
+//             return ;
+//         }
+//         if(index == size){
+//             addAtTail(val);
+//             return ;
+//         }
+//         Node node = new Node(val);
+//         size++;
+//         Node temp = head;
+//         for(int i = 0; i<index-1; i++){
+//             temp = temp.next;
+//         }
+//         node.next = temp.next;
+//         temp.next = node;
+//     }
+    
+//     public void deleteAtIndex(int index) {
+//         if(head == null || index>=size){
+//             return ;
+//         }
+//         if(index ==0){
+//             head = head.next;
+//             if(head == null){
+//                 tail = head;
+//             }
+//             size--;
+//             return;
+//         }
+//         Node temp = head;
+//         for(int i = 0; i<index-1; i++){
+//             temp = temp.next;
+//         }
+//         if(temp.next == tail){
+//             tail = temp;
+//         }
+//         temp.next = temp.next.next;
+//         size--;
+//     }
+// }
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList obj = new MyLinkedList();
+ * int param_1 = obj.get(index);
+ * obj.addAtHead(val);
+ * obj.addAtTail(val);
+ * obj.addAtIndex(index,val);
+ * obj.deleteAtIndex(index);
+ */
