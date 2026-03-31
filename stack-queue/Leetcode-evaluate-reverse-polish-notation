@@ -1,0 +1,38 @@
+class Solution {
+    int compute(int first, int second, String operator){
+        if(operator.equals("+")){
+            return first + second;
+        }
+        else if(operator.equals("-")){
+            return first - second;
+        }
+        else if(operator.equals("*")){
+            return first * second;
+        }
+        else if(operator.equals("/")){
+            return first / second;
+        }
+        else{
+            return 0;
+        }
+    }
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> operandStack = new Stack<>();
+        for(String token : tokens){
+            // token is operator
+            if(token.equals ("+") || token.equals ("-")
+            || token.equals ("*") || token.equals ("/")){
+                int second = operandStack.pop();
+                int first = operandStack.pop();
+                int result = compute(first, second, token);
+                operandStack.push(result);
+            }
+            else{
+                // Operand 
+                operandStack.push(Integer.parseInt(token));
+            }
+            
+        }
+        return operandStack.peek();
+    }
+}
