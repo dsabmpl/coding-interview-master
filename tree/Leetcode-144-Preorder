@@ -43,7 +43,7 @@ class Solution {
     //     return result;
     // }
     
-    // TC O(2^h) h = height of tree, SC O(N) - number of nodes
+    // TC O(N) N = Number of Nodes in tree, SC O(N) - number of nodes
     /*
     void preOrder(TreeNode root, List<Integer> result){
         if(root == null){
