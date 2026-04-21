@@ -1,0 +1,39 @@
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> bigList = new ArrayList<>();
+        // every node has column (HD) and Row (Level)
+        int hd = 0;
+        int level = 0;
+        TreeMap<Integer, List<Pair<Integer, Integer>>> treeMap = new TreeMap<>();
+        helper(root, level, hd, treeMap); // traverse node by node and fill the DS
+        // after fill the DS (treeMap)
+        for(Integer hdKey : treeMap.keySet()){
+                List<Pair<Integer, Integer>> pairList = treeMap.get(hdKey);
+                //list.sort(comparsionLogicExpression); // Lambda Expression
+                // Interface - Comparable , Comparator
+                pairList.sort((a,b)->a.getKey().compareTo(b.getKey())==0
+                ?a.getValue()-b.getValue(): a.getKey() - b.getKey());
+                List<Integer> smallList = new ArrayList<>();
+                for(Pair<Integer, Integer> pair : pairList){
+                    smallList.add(pair.getValue());
+                }
+                bigList.add(smallList);
+                
+        }
+        return bigList;
+    }
+    void helper(TreeNode root, int level, int hd, TreeMap<Integer, List<Pair<Integer, Integer>>> treeMap){
+        // Base case
+        if(root == null){
+            return ;
+        }
+        if(!treeMap.containsKey(hd)){
+            treeMap.put(hd , new ArrayList<>());
+        }
+        treeMap.get(hd).add(new Pair(level , root.val));
+        // Traverse to the left
+        helper(root.left, level + 1, hd - 1, treeMap);
+        // Traverse to the right
+        helper(root.right, level + 1, hd + 1, treeMap);
+    }
+}
