@@ -1,0 +1,20 @@
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // base case
+        if(root == null || root == p || root == q){
+            return root;
+        }
+        // Lookup in left
+        TreeNode leftResult = lowestCommonAncestor(root.left, p , q);
+        // Lookup in right
+        TreeNode rightResult= lowestCommonAncestor(root.right, p , q);
+        if(leftResult == null){
+            return rightResult;
+        }
+        if(rightResult== null){
+            return leftResult;
+        }
+        // now left is not null and right is not null
+        return root;
+    }
+}
