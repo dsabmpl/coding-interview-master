@@ -1,0 +1,34 @@
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null){
+            return null;
+        }
+        if(key < root.val){
+            root.left = deleteNode(root.left, key);
+        }
+        else if(key> root.val){
+            root.right = deleteNode(root.right, key);
+        }
+        else{
+            // found
+            // single child
+            if(root.left == null){
+                return root.right;
+            }
+            if(root.right == null){
+                return root.left;
+            }
+            // it means left!=null && right!=null
+            TreeNode minNodeInLeft = findMinInLeft(root.right);
+            root.val  = minNodeInLeft.val;
+            root.right = deleteNode(root.right, minNodeInLeft.val);
+        }
+        return root;
+    }
+    TreeNode findMinInLeft(TreeNode node){
+        while(node.left!=null){ // move to the last node
+            node = node.left;
+        }
+        return node; // return the last node
+    }
+}
