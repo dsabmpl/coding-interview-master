@@ -1,0 +1,25 @@
+
+class Solution {
+    public List<List<Integer>> printGraph(int V, int edges[][]) {
+        // code here
+        // V - Number of Vertex
+        // edges [][] = it contains edges 
+        // Create Adjancey List
+        // Outer ArrayList represents the vertex
+        // Inner ArrayList represents the connections 
+        // Let V = 5
+        List<List<Integer>> graph = new ArrayList<>();
+        // First Create the Vertex
+        for(int i = 0 ; i<V ; i++){
+            graph.add(new ArrayList<Integer>());
+        }
+        // Now Next create the Connections / Edges
+        for(int []edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            graph.get(u).add(v);
+            graph.get(v).add(u);
+        }
+        return graph;
+    }
+}
