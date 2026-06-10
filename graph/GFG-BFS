@@ -1,0 +1,24 @@
+class Solution {
+    // TC (V + E) SC O(V)
+    public ArrayList<Integer> bfs(ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        int V = adj.size(); // Number of Vertex
+        ArrayList<Integer> bfsResult = new ArrayList<>();
+        boolean visited[] = new boolean[V]; // all fill with false
+        visited[0] = true;
+        bfsResult.add(0);
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(0);
+        while(!queue.isEmpty()){
+            int vertex = queue.poll();
+            for(int neighbour : adj.get(vertex)){
+                if(!visited[neighbour]){
+                    visited[neighbour] = true;
+                    bfsResult.add(neighbour);
+                    queue.add(neighbour);
+                }
+            }
+        }
+        return bfsResult;
+    }
+}
