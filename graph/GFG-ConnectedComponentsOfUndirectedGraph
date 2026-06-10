@@ -1,0 +1,62 @@
+class Solution {
+    public ArrayList<ArrayList<Integer>> getComponents(int V, int[][] edges) {
+        // code here
+        // Prepare a Adj List
+        ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
+        // fill the adjlist
+        // fill the vertex
+        for(int i = 0; i<V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        // maintain the edges / connections
+        for(int edge[] : edges){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v);
+            adjList.get(v).add(u);
+            
+        }
+        boolean [] visited = new boolean[V];
+        ArrayList<ArrayList<Integer>> allComponents = new ArrayList<>();
+        for(int i = 0 ; i<V; i++){
+            if(!visited[i]){
+                ArrayList<Integer> comp = new ArrayList<>(); 
+                // Traversal Result store in component
+                // Do DFS or BFS
+                dfsHelper(i, adjList, visited, comp);
+                allComponents.add(comp); 
+            }
+        }
+        return allComponents;
+        
+        
+        
+        
+        
+    }
+    // Build DFS or BFS
+    void dfsHelper(int vertex, ArrayList<ArrayList<Integer>> adjList,
+    boolean [] visited, ArrayList<Integer> comp){
+        visited[vertex] = true;
+        comp.add(vertex);
+        for(int neighbour : adjList.get(vertex)){
+            if(!visited[neighbour]){
+                dfsHelper(neighbour, adjList, visited, comp);
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
