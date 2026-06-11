@@ -1,0 +1,74 @@
+class Solution {
+    public int numIslands(char[][] grid) {
+        int rows = grid.length;
+        int cols = grid[0].length;
+        // We need to traverse in a grid 
+        // (each cell ) traverse in 4 directions
+        boolean [][]visited = new boolean[rows][cols];
+        int countIslands = 0;
+        for(int i = 0; i<rows; i++){
+            for(int j = 0; j<cols; j++){
+                // check this land is not already visited
+                // it is land or water
+                if(!visited[i][j] && grid[i][j] == '1'){
+                    //dfsHelper(grid, visited, i, j);
+                    bfsHelper(grid, visited, i, j);
+                    countIslands++;
+                }
+            }
+        }
+        return countIslands;
+    }
+    void dfsHelper(char[][] grid, boolean [][]visited, int row, int col){
+        // base case
+        if(row < 0 || row>=grid.length 
+        || col <0 || col>=grid[0].length 
+        || visited[row][col] || grid[row][col]=='0'){
+            return;
+        }
+        visited[row][col] = true;
+        dfsHelper(grid, visited, row + 1, col); // going down
+        dfsHelper(grid, visited, row - 1, col); // going Up
+        dfsHelper(grid, visited, row, col + 1); // going right
+        dfsHelper(grid, visited, row, col-1); // going left
+    }
+    void bfsHelper(char[][] grid, boolean [][]visited, int row, int col){
+       // queue will store the cell to process
+       // and cell has row and col
+       // int[] {r, c} --> [0] - row [1] - col
+         Queue<int[]> queue = new LinkedList<>();
+         // store the current cell to process in queue
+         queue.add(new int[]{row, col});  
+         visited[row][col] = true;  // mark the current cell visited
+         int directions [][] ={{1, 0}, {-1,0}, {0,1}, {0,-1}};
+         while(!queue.isEmpty()){
+            int currentCell[] = queue.poll();
+            // current cell contains row and col
+            // get the row from the current cell
+            int currentRow = currentCell[0]; 
+            int currentCol = currentCell[1];
+            for(int []direction : directions){
+                int newRow = currentRow + direction[0];
+                int newCol = currentCol + direction[1];
+                if(newRow>=0 && newRow<grid.length && newCol>=0
+                && newCol<grid[0].length && grid[newRow][newCol]=='1'
+                && !visited[newRow][newCol])
+                {
+                    visited[newRow][newCol] =true;
+                    queue.add(new int[]{newRow, newCol});
+                }
+            }
+         }
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
