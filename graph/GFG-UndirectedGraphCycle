@@ -1,0 +1,46 @@
+class Solution {
+    public boolean isCycle(int V, int[][] edges) {
+        // Code here
+        // prepare the graph (adjList)
+        List<List<Integer>> adjList = new ArrayList<>();
+        for(int i = 0; i<V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int edge[] : edges){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v);
+            adjList.get(v).add(u);
+        }
+        boolean []visited = new boolean[V];
+        for(int i = 0 ; i<V; i++){
+            if(!visited[i]){
+                if(dfsHelper(adjList, visited, i, -1)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    boolean dfsHelper(List<List<Integer>> adjList, boolean []visited, 
+    int vertex , int parent){
+        visited[vertex] = true;
+        for(int neighbour : adjList.get(vertex)){
+            if(!visited[neighbour]){
+                if(dfsHelper(adjList, visited, neighbour, vertex)){
+                    return true; // backtrack true
+                }
+            }
+            // visited found
+            else if(neighbour!=parent){
+                return true; // cycle found
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
