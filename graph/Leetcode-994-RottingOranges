@@ -1,0 +1,58 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        // 0 - empty cell (no orange)
+        // 1 - fresh orange
+        // 2 -  rotton orange
+        // minute - level
+        // BFS 
+        int rows = grid.length;
+        int cols = grid[0].length;
+        int fresh = 0;
+        Queue<int[]> queue = new LinkedList<>();
+        // count fresh oranges
+        // scan the entire grid 
+        // all rotton oranges store in queue for further process
+        // and count the fresh count
+        for(int i = 0; i<rows; i++){
+            for(int j = 0 ; j<cols ; j++){
+                if(grid[i][j] == 2){
+                    // if found rotton oranges store in queue
+                    queue.add(new int[]{i,j});
+                }
+                // if fresh orange found
+                if(grid[i][j] == 1){
+                    fresh++;
+                }
+            }
+        }
+        // Edge case 
+        if(fresh == 0){
+            // No orange for rotton
+            return 0;
+        }
+        // now i do BFS for rotton oranges
+        int minutes = -1;
+        int directions[][] = {{1,0}, {-1,0}, {0,1}, {0, -1}};
+        while(!queue.isEmpty()){
+            int size = queue.size();
+            minutes++; // level
+            for(int i = 0; i<size; i++){
+                int currentCell[] = queue.poll();
+                for(int direction[] : directions){
+                    int newRow = currentCell[0] + direction[0];
+                    int newCol = currentCell[1] + direction[1];
+                    // new row and new col with in the grid and 
+                    // there is fresh orange
+                    if(newRow>=0 && newRow<rows && newCol>=0 && 
+                    newCol<cols && grid[newRow][newCol] == 1 ){
+                        grid[newRow][newCol] = 2;
+                        fresh--;
+                        queue.add(new int[]{newRow, newCol});
+                    }
+                }
+            }
+           
+        }
+         return fresh == 0 ? minutes : -1;
+    }
+}
