@@ -1,0 +1,50 @@
+class Solution {
+    public boolean isBipartite(int[][] graph) {
+        // get the number of vertex
+        int n = graph.length;
+        // if no color so we consider 0 
+        // 1 for red color and 2 for green color
+        // to store which vertex has which color
+        int []colors = new int[n];
+        // this array has 0 by default for int value
+        // traverse each vertex one by one
+        for(int i = 0; i<n ; i++){
+            // if vertex has no color (0)
+            if(colors[i] ==0){
+                // there is no color , now apply the color
+                if(!dfsHelper(i, 1, graph, colors)){
+                    return false;
+                }
+            }
+        } 
+        return true;   
+    }
+    boolean dfsHelper(int vertex, int vertexColor, 
+    int[][] graph, int []colors ){
+        // set the color of the current vertex
+        colors[vertex] =  vertexColor;
+        // explore the neighbours
+        for(int neighbour : graph[vertex]){
+            // case - 1 If no color set then pick either 1 or 2
+            if(colors[neighbour] == 0){
+                int oppositeColor = vertexColor == 1 ? 2:1;
+                if(!dfsHelper(neighbour, oppositeColor, graph, colors)){
+                    return false;
+                }
+            }
+            // case -2 neighbour already has a color, 
+            // that color is same as my color
+            else if(colors[neighbour] == vertexColor){
+                return false;
+            }
+
+        }
+        return true;
+    }
+}
+
+
+
+
+
+
