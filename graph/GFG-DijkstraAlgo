@@ -1,0 +1,57 @@
+class Solution {
+    public int[] dijkstra(int V, int[][] edges, int src) {
+        // code here
+        // Step - 1 Build Adjancey List , Represent Graph
+        List<List<int[]>> adjList  = new ArrayList<>();
+        // fill this adjList (vertex)
+        for(int i = 0; i<V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        // fill the edges
+        for(int []edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            adjList.get(u).add(new int[]{v,w});
+            adjList.get(v).add(new int[]{u,w}); // undirected
+        }
+        // Maintain shorted distances
+        int []distance = new int[V];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[src] = 0;
+        // Maintain Heap (Min Heap) - 
+        //I will give u the smallest distance (distance , v)
+        PriorityQueue<int[]> pq = 
+        new PriorityQueue<>((a,b)->a[0] - b[0]);
+        pq.add(new int[]{0, src}); // maintain distance and vertex
+        while(!pq.isEmpty()){
+            int current[] = pq.poll();
+            int dist = current[0];
+            int vertex = current[1];
+            // skip if u dont get shorter path
+            if(dist > distance[vertex]){
+                continue;
+            }
+            // Now relax the edges
+            for(int neighbour[] : adjList.get(vertex)){
+                int next = neighbour[0];
+                int weight = neighbour[1];
+                if(distance[vertex] + weight < distance[next]){
+                    // found something shorter
+                    // update with a new weight
+                    distance[next] = distance[vertex] + weight;
+                    pq.add(new int[]{distance[next] , next});
+                }
+            }
+        }
+        return distance;
+        
+    }
+}
+
+
+
+
+
+
+
