@@ -1,0 +1,110 @@
+class Solution {
+    
+    // Kahn's Algo / BFS
+    public ArrayList<Integer> topoSort(int V, int[][] edges) {
+        // First Build the Graph
+         List<List<Integer>> adjList = new ArrayList<>();
+         for(int i = 0; i<V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int []edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v); // Directed Graph (u point v)
+            
+        }
+        int []inDegree  = new int[V];
+        // now compute inDegree of each vertex
+        for(int u = 0; u<V ; u++){
+            for(int v : adjList.get(u)){
+                inDegree[v]++;
+            }
+        }
+        // start with indegree 0 
+        Queue<Integer> queue = new LinkedList<>();
+        for(int i = 0 ; i<V; i++){
+            if(inDegree[i] == 0){
+                queue.add(i);
+            }
+        }
+        ArrayList<Integer> result = new ArrayList<>();
+        while(!queue.isEmpty()){
+            int vertex  = queue.poll();
+            result.add(vertex);
+            for(int neighbour : adjList.get(vertex)){
+                inDegree[neighbour]--;
+                if(inDegree[neighbour] == 0){
+                    queue.add(neighbour);
+                }
+            }
+        }
+        return result;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public ArrayList<Integer> topoSortDFS(int V, int[][] edges) {
+        // code here
+        // build the graph
+        List<List<Integer>> adjList = new ArrayList<>();
+        // fill the adjList
+        for(int i = 0; i<V; i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int []edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v); // Directed Graph (u point v)
+            
+        }
+        boolean visited [] = new boolean[V];
+        // Maintain Stack for maintain ordering 
+        Stack<Integer> stack = new Stack<>();
+        // traverse each vertex one by one
+        for(int i = 0; i<V ; i++){
+            if(!visited[i]){
+                dfsHelper(i, adjList, visited, stack);
+            }
+        } 
+        // Pop from the Stack and store in list
+        ArrayList<Integer> result = new ArrayList<>();
+        while(!stack.isEmpty()){
+            result.add(stack.pop());
+        }
+        return result;
+        
+    }
+    void dfsHelper(int vertex, List<List<Integer>> adjList, 
+    boolean visited [], Stack<Integer> stack){
+        visited[vertex] = true;
+        for(int neighbour : adjList.get(vertex)){
+            if(!visited[neighbour]){
+                dfsHelper(neighbour, adjList, visited, stack);
+            }
+        }
+        // backtrack
+        stack.push(vertex); 
+    }
+    
+}
+
+
+
+
+
+
+
+
