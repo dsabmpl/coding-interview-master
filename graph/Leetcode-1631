@@ -1,0 +1,56 @@
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        int rows = heights.length;
+        int cols = heights[0].length;
+        int efforts[][] = new int[rows][cols]; // R X C
+        for(int []row : efforts){
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        efforts[0][0] = 0; // this is my start point
+        // Maintain smallest effort first
+        PriorityQueue<int[]> pq = 
+        new PriorityQueue<>((a,b)->a[0]-b[0]);
+        // new int[]{0,0, 0} - 0 effort 0 - row 0 - col
+        pq.add(new int[]{0,0, 0}); // start with (0,0) with effort of 0
+        int directions[][] = 
+        new int[][]{{1,0}, {-1,0}, {0, 1}, {0, -1}};
+        while(!pq.isEmpty()){
+            int current[] = pq.poll();
+            int e = current[0]; // get the current effort
+            int r = current[1]; // get the current row
+            int c = current[2]; // get the current col
+            // your are on the last cell
+            if(r == rows -1 && c == cols-1){
+                return e; // if we reach to the end we get min effort
+            }
+            if(e > efforts[r][c]){
+                continue;
+            }
+            for(int []direction : directions){
+                int newRow =  r+ direction[0];
+                int newCol = c + direction[1];
+                if(newRow < 0 || newRow>=rows ||
+                newCol <0 || newCol>=cols){
+                    // out of grid , so skip it
+                    continue;
+                }
+                int diff = Math.abs(heights[newRow][newCol] - heights[r][c]);
+                int newEffort = Math.max(efforts[r][c], diff);
+                if(newEffort < efforts[newRow][newCol]){
+                    efforts[newRow][newCol] = newEffort;
+                    pq.add(new int[]{newEffort, newRow, newCol});
+                }
+            }
+        }
+        return 0; // Just for Syntax
+    }
+}
+
+
+
+
+
+
+
+
+
