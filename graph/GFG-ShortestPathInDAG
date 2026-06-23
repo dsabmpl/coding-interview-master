@@ -1,0 +1,76 @@
+class Solution {
+
+    public int[] shortestPath(int V, int E, int[][] edges) {
+        // Code here
+        // prepare adjList
+        List<List<int []>> adjList = new ArrayList<>();
+        for(int i = 0 ; i<V ; i++){
+            adjList.add(new ArrayList<>());
+        }
+        // fill the edges
+        for(int []edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+            adjList.get(u).add(new int[]{v,w}); 
+        }
+        boolean visited [] = new boolean[V];
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i<V; i++){
+            if(!visited[i]){
+                topoDFSHelper(i, adjList, visited, stack);
+            }
+        }
+        // TOPO DFS DONE AND MAINTAIN IN STACK
+        // now compute the distance
+        int []distance = new int[V];
+        Arrays.fill(distance, Integer.MAX_VALUE);
+        distance[0]= 0;
+        
+        // now traverse the stack
+        while(!stack.isEmpty()){
+            int vertex = stack.pop();
+            if(distance[vertex] != Integer.MAX_VALUE){
+                for(int[] neighbour : adjList.get(vertex)){
+                    int v = neighbour[0];
+                    int w = neighbour[1];
+                    if(distance[vertex] + w < distance[v]){
+                        // RELAX
+                        distance[v] = distance[vertex] + w;
+                    }
+                }
+            }
+        }
+        // unreach distance make it -1
+        for(int i = 0; i<V; i++){
+            if(distance[i] == Integer.MAX_VALUE){
+                distance[i] = -1;
+            }
+        }
+        return distance;
+        
+        
+        
+        
+        
+    }
+    void topoDFSHelper(int vertex, List<List<int []>> adjList, 
+    boolean visited [], Stack<Integer> stack){
+        visited[vertex] = true; // this vertex is visited
+        // current vertex neighbour get
+        for(int []neighbour : adjList.get(vertex)){
+            int v = neighbour[0];
+            if(!visited[v]){
+               topoDFSHelper(v, adjList, visited, stack); 
+            }
+        }
+        stack.push(vertex);
+    }
+}
+
+
+
+
+
+
+
