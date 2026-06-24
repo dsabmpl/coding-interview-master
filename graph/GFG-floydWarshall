@@ -1,0 +1,24 @@
+class Solution {
+    public void floydWarshall(int[][] dist) {
+       // Total number of Vertex
+       int V = dist.length;
+       // Pick every (i , j ) Pair and also try with k (middleman)
+       // Need 3 Loops (k, i , j )
+       // TC (v^3)
+       for(int k = 0; k<V; k++){
+           for(int i = 0; i<V; i++){
+               for(int j = 0; j<V; j++){
+                   if(dist[i][k] == (int)1e8 || dist[k][j] == (int)1e8){
+                       continue; // skip
+                   }
+                   // may be shorter path
+                   if(dist[i][k] + dist[k][j] < dist[i][j]){
+                       dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+               }
+           }
+       }
+       
+            
+    }
+}
