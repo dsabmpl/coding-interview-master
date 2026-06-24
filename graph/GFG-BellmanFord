@@ -1,0 +1,39 @@
+class Solution {
+    public int[] bellmanFord(int V, int[][] edges, int src) {
+       // maintain the distance array
+       int dist[] = new int[V]; // all distance except the src one
+       // are 10^8 (INF)
+       Arrays.fill(dist, (int)1e8);
+       dist[src] = 0;
+       //  Start from source to all vertex
+       // in this we relax all edges
+       // Traverse 0 to V-1 times
+       for(int i = 0; i<V; i++){
+           // now move to edges one by one
+           for(int []edge : edges){
+               int u = edge[0];
+               int v = edge[1];
+               int w = edge[2];
+               if(dist[u] != (int)1e8){
+                   // now we can compute the shortest path
+                   if(dist[u] + w < dist[v]){
+                       dist[v] = dist[u] + w; 
+                   }
+               }
+           }
+       }
+       // Now time to detect negative cycle
+       for(int []edge : edges){
+           int u = edge[0];
+           int v = edge[1];
+           int w = edge[2];
+           if(dist[u] !=(int)1e8 && dist[u] + w < dist[v]){
+               return new int[]{-1};
+           }
+       }
+       // No Negative Cycle Detect
+       return dist;
+       
+        
+    }
+}
