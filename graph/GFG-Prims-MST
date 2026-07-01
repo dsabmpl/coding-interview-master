@@ -1,0 +1,83 @@
+import java.util.*;
+
+class Solution {
+
+    public int spanningTree(int V, int[][] edges) {
+
+        // Create Adjacency List
+        ArrayList<ArrayList<int[]>> graph = new ArrayList<>();
+
+        // Create empty list for every vertex
+        for (int i = 0; i < V; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // Convert edge list into adjacency list
+        for (int[] edge : edges) {
+
+            int u = edge[0];
+            int v = edge[1];
+            int wt = edge[2];
+
+            // Because graph is undirected
+            graph.get(u).add(new int[]{v, wt});
+            graph.get(v).add(new int[]{u, wt});
+        }
+
+        // visited[i] = true means vertex already included in MST
+        boolean[] visited = new boolean[V];
+
+        // PQ stores:
+        // {weight , vertex , parent}
+        PriorityQueue<int[]> pq =
+                new PriorityQueue<>((a, b) -> a[0] - b[0]);
+
+        // Start from vertex 0
+        pq.offer(new int[]{0, 0, -1});
+
+        // Final MST Cost
+        int mstSum = 0;
+
+        while (!pq.isEmpty()) {
+
+            // Take smallest weight edge
+            int[] current = pq.poll();
+
+            int weight = current[0];
+            int vertex = current[1];
+            int parent = current[2];
+
+            // Already processed before
+            if (visited[vertex]) {
+                continue;
+            }
+
+            // Mark current vertex visited
+            visited[vertex] = true;
+
+            // Add edge weight into MST cost
+            mstSum += weight;
+
+            // Visit all neighbours
+            for (int[] neighbour : graph.get(vertex)) {
+
+                int nextVertex = neighbour[0];
+                int nextWeight = neighbour[1];
+
+                // Only push unvisited vertices
+                if (!visited[nextVertex]) {
+
+                    pq.offer(
+                        new int[]{
+                            nextWeight,
+                            nextVertex,
+                            vertex
+                        }
+                    );
+                }
+            }
+        }
+
+        return mstSum;
+    }
+}
