@@ -1,0 +1,65 @@
+// Disjoint Set
+// find , union
+class Solution {
+    // rank 
+    int []rank;
+    // parent
+    int []parent;
+    int find(int x){
+        // base case
+        if(parent[x] == x){
+           return x; // return ultimate parent
+        }
+        parent[x] = find(parent[x]); 
+        // path compression
+        return parent[x];
+    }
+    // Union by Rank
+    void union(int u, int v){
+        int pu = find(u);
+        int pv = find(v);
+        if(rank[pu] < rank[pv]){
+            parent[pu] = pv;
+        }
+        else if(rank[pu] > rank[pv]){
+            parent[pv] = pu;
+        }
+        else{
+            parent[pv] = pu; // same rank
+            rank[pu]++;
+        }
+    }
+    public int findCircleNum(int[][] isConnected) {
+        int V = isConnected.length;
+        parent = new int[V];
+        rank = new int[V]; // all fill with 0
+        // fill the parent
+        for(int i = 0; i<V; i++){
+            parent[i] = i;
+        }
+        for(int i = 0; i<V; i++){
+            for(int j = i+1; j<V ; j++){
+                if(isConnected[i][j] == 1){
+                    union(i,j);
+                }
+            }
+        }
+        int pro = 0;
+        for(int i = 0; i<V ; i++){
+            if(find(i) == i){
+                pro++;
+            }
+        }
+        return pro;
+
+
+
+    }
+}
+
+
+
+
+
+
+
