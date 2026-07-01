@@ -1,0 +1,75 @@
+// Approach - 4 Space Optimize
+class Solution {
+    public int climbStairs(int n) {
+        if ( n == 1){
+            return 1;
+        }
+        if(n == 2){
+            return 2;
+        }
+        int first = 1;
+        int second = 2;
+        int third = 0;
+        for(int i = 3; i<=n; i++){
+            third = first + second;
+            first = second;
+            second = third;
+        }
+        return third;
+    }
+}
+
+
+// Approach -3 Tabulation
+/*
+class Solution {
+    public int climbStairs(int n) {
+        if(n == 1 ){
+            return 1;
+        }
+        int dp[] = new int[n+1];
+        // fill the base case
+        dp[1] = 1; // 1 step
+        dp[2] = 2; // 1 1 step , 2 step
+        for(int i = 3; i<=n; i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n];
+    }
+}
+*/
+
+// Approach-2 Memoization
+/*class Solution {
+    public int climbStairs(int n) {
+        int dp[] = new int[n+1];
+        Arrays.fill(dp, -1);
+        return helper(n, dp);
+    }
+    int helper(int n , int dp[]){
+          if(n==0 || n ==1){
+            return 1;
+          }  
+          if(dp[n]!=-1){
+            return dp[n];
+          }
+          int step1 = helper(n-1, dp);
+          int step2 = helper(n-2, dp);
+          dp[n] = step1 + step2;
+          return dp[n];
+    }
+}
+*/
+// Approach - 1 Recursive Solution - TLE
+/*
+class Solution {
+    public int climbStairs(int n) {
+        if(n == 1 || n==0){
+            return 1;
+        }
+        int step1 = climbStairs(n-1); // 1 step
+        int step2  = climbStairs(n-2); // 2 step
+        return step1 + step2;
+    }
+}
+*/
