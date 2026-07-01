@@ -1,0 +1,89 @@
+class Solution {
+    // Function to find number of strongly connected components in the graph
+    public int kosaraju(int V, int[][] edges) {
+        // code here
+        // Prepare Adj List
+        List<List<Integer>> adjList = new ArrayList<>();
+        for(int i = 0; i<V;  i++){
+            adjList.add(new ArrayList<>());
+        }
+        for(int edge[] : edges){
+            int u = edge[0];
+            int v = edge[1];
+            adjList.get(u).add(v); // Directed Graph
+        }
+        // Step - 1 do DFS and according to the finish time , put in stack
+        boolean [] visited = new boolean[V];
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i<V; i++){
+            if(!visited[i]){
+                dfsHelper(i, adjList, visited, stack);
+            }
+        }
+        // Step - 2 Reverse the Edges
+         List<List<Integer>> reverseList = new ArrayList<>();
+         for(int i = 0; i<V; i++){
+             reverseList.add(new ArrayList<>());
+         }
+         for(int edge[] : edges){
+            int u = edge[0];
+            int v = edge[1];
+            reverseList.get(v).add(u); // Reverse Directed Graph
+        }
+        
+        // Step - 3 DFS Based on Finish Time (Stack)
+        boolean visited2[] = new boolean[V];
+        int SCC_COUNT = 0;
+        while(!stack.isEmpty()){
+            int vertex = stack.pop();
+            if(!visited2[vertex]){
+                dfsHelper2(vertex, reverseList, visited2);
+                SCC_COUNT++;
+                
+            }
+        }
+        return SCC_COUNT;
+         
+        
+    }
+    void dfsHelper(int vertex, List<List<Integer>> adjList, 
+    boolean [] visited, Stack<Integer> stack){
+        visited[vertex] = true;
+        for(int neighbour : adjList.get(vertex)){
+            if(!visited[neighbour]){
+                dfsHelper(neighbour, adjList, visited, stack);
+            }
+        }
+        stack.push(vertex);
+    }
+     void dfsHelper2(int vertex, List<List<Integer>> reverseAdjList, 
+    boolean [] visited2){
+        visited2[vertex] = true;
+        for(int neighbour : reverseAdjList.get(vertex)){
+            if(!visited2[neighbour]){
+                dfsHelper2(neighbour, reverseAdjList, visited2);
+            }
+        }
+        
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
