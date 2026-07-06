@@ -1,0 +1,103 @@
+// Approach - 4 (Space Optimize ) (2-D - ONe-D)
+// maintain prev row and current row
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int prev[] = new int[n+1];
+        Arrays.fill(prev, 1); // fill the base case for entire row
+        prev[0] = 0;
+        for(int i= 2; i<=m ; i++){
+            int curr[] = new int[n+1];
+            curr[1] = 1;
+            for(int j = 2; j<=n ; j++){
+                // prev[j] = goes up
+                // curr[j-1] = goes left
+                curr[j] = prev[j] + curr[j-1];
+            }
+            prev = curr;
+        }
+        return prev[n]; // store the final answer
+    }
+}
+
+// Approach - 3 Tabulation Way TC (M*N) SC (M*N)
+/*class Solution {
+    public int uniquePaths(int m, int n) {
+        
+        int dp[][] = new int[m+1][n+1];
+        // fill the base case for row
+        for (int i = 1; i<=n ; i++ ){
+            dp[1][i] = 1;
+        }
+        // fill the base case for col
+        for(int i = 1; i<=m ; i++){
+            dp[i][1] = 1;
+        }
+        for(int i = 2; i<=m ; i++){
+            for(int j = 2; j<=n ; j++){
+                int up = dp[i-1][j];
+                int left = dp[i][j-1];
+                int total = up + left;
+                dp[i][j] = total;
+            }
+        }
+        return dp[m][n]; // final result
+    }
+}
+*/
+// Approach - 2 Memoization TC O(M X N) SC O(M X N)
+/*class Solution {
+    public int uniquePaths(int m, int n) {
+        // maintain dp (2-d array for m and n)
+        int dp[][] = new int[m+1][n+1];
+        // fill with -1
+        for(int []row : dp){
+            Arrays.fill(row, -1);
+        }
+        return helper(m , n, dp);
+
+    }
+    int helper(int m, int n , int dp[][]){
+        // base case
+        if(m == 1 && n==1){
+            return 1;
+        }
+        // out of boundary 
+        if(m < 1|| n<1){
+            return 0;
+        }
+        // Already have result so dont compute it
+        if(dp[m][n]!=-1){
+            return dp[m][n];
+        }
+        // we need compute
+        int up = helper(m - 1, n , dp);
+        int left = helper(m , n-1, dp);
+        int total = up + left;
+        dp[m][n] = total;
+        return dp[m][n];
+    }
+}
+*/
+// Approach - 1 Recursive Way (Brute Force) TC O(2^ (M+N)) SC O(M+N)
+/*
+class Solution {
+    public int uniquePaths(int m, int n) {
+        // base case - reach to the source
+        if(m == 1 && n==1){
+            return 1; // 1 possible path
+        }
+        // out of boundary
+        if(m < 1 || n<1 ){
+            return 0;
+        }
+
+        // Choice - 1 Going up
+        int up = uniquePaths(m-1, n);
+        // Choice - 2 Going left
+        int left = uniquePaths(m, n-1);
+        int total = up + left ;
+        return total;
+    }
+}
+
+*/
