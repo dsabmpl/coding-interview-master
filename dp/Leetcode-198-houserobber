@@ -1,0 +1,105 @@
+// Approach - 4 Space Optimize - Best Solution
+// Instead of maintaining the entire dp array
+// we maintain first = dp[i+1] and second = dp[i+2], 
+// come down to SC O(1)
+class Solution {
+    public int rob(int[] nums) {
+
+        int n  = nums.length;
+        if(n== 1){
+            return nums[0];
+        }
+        int first = 0; // dp[n] = 0 (i+2)
+        int second = nums[n-1]; // (i+1) store last house to rob
+        int current = 0;
+        for(int i = n-2; i>=0; i--){
+            // Choice - 1 rob
+            int rob = nums[i] + first;
+            // Choice - 2 skip
+            int skip = second;
+            current = Math.max(rob, skip);
+            first = second;
+            second = current;
+        }
+        return current;
+    }
+}
+
+// Approach - 3 Tabulation Way
+/*
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n + 1];
+        // fill base cases
+        dp[n] = 0; 
+        dp[n-1] = nums[n-1]; // last house to rob
+        for(int i = n-2; i>=0; i--){
+            // Choice - 1 
+            int rob = nums[i] + dp[i+2];
+            // Choice - 2 skip
+            int skip = dp[i+1];
+            int max = Math.max(rob, skip);
+            dp[i] = max;
+        }
+        // final result
+        return dp[0];
+
+    }
+}
+*/
+
+// Approach - 2 Memoization Way TC O(N) SC O(N)
+/*
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int dp[] = new int[n + 1];
+        // fill the array with -1
+        Arrays.fill(dp , -1);
+        return helper(0, nums,dp);
+    }
+    int helper(int index , int nums[], int dp[]){
+        // base case
+        if(index>=nums.length){
+            return 0;
+        }
+        // before compute check is it already computed
+        if(dp[index]!=-1){
+            return dp[index];
+        }
+        // need compute
+        // Choice - 1 Rob
+        int rob = nums[index] + helper(index + 2, nums, dp);
+        // Choice - 2 Skip
+        int skip = helper(index + 1, nums , dp);
+        int max = Math.max(rob , skip);
+        dp[index] = max;
+        return dp[index];
+    }
+}
+*/
+
+// Approach - 1 Recursive Way - TC 2^N
+/*
+class Solution {
+    public int rob(int[] nums) {
+        // start from 0th inde and reach till end
+        return helper(0, nums);
+    }
+    int helper(int index, int []nums){
+        // Base case - stop the recursion
+        // i pass the last house
+        if(index>=nums.length){
+            return 0;
+        }
+        // Choice - 1 Rob the current house and move to the i+2 house
+        int rob = nums[index] + helper(index + 2, nums);
+        // Choice - 2 skip the current house and move to the i + 1 house
+        int skip = helper(index + 1, nums);
+        // return the max result
+        int max = Math.max(rob , skip);
+        return max;
+    }
+}
+*/
