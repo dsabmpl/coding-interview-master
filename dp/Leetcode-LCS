@@ -1,0 +1,21 @@
+// Approach - 1 Recursion TC (2^ N) SC O(text1.length() + text2.length())
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        return helper(0, 0 , text1, text2);
+    }
+    int helper(int i , int j, String text1, String text2){
+        // Base case - one of the string is exhausted
+        if(i == text1.length() || j== text2.length()){
+            return 0;
+        }
+        // Match case
+        if(text1.charAt(i) == text2.charAt(j)){
+            return 1 + helper(i+1, j+1, text1, text2);
+        }
+        // No Match Case Has 2 Choices
+        int choice1 = helper(i+1, j , text1, text2); // skip the text1
+        int choice2 = helper(i , j+1,text1, text2); // skip the text2
+        int max = Math.max(choice1, choice2);
+        return max;
+    }
+}
