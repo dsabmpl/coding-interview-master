@@ -1,0 +1,110 @@
+// Approach - 4 Space Optimise Approach - TC O(N Log N) SC O(N)
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        // tail array - LIS Element Store
+        int tails [] = new int[nums.length]; // Space O(N)
+        // traverse each element of nums one by one
+        int tailSize = 0;
+        for(int num : nums){ // O(N)
+            // Binary Search - Log N
+            int low = 0; 
+            int high = tailSize;
+            while(low < high){
+                int mid = (low + high)/2;
+                if(tails[mid] < num){
+                    low = mid + 1;
+                }
+                else{
+                    high = mid ;
+                }
+            }
+            tails[low] = num;
+            if(low == tailSize){
+                tailSize++;
+            }
+ 
+        }
+        return tailSize; // LIS Length
+    }
+}
+
+// Approach - 3  Tabulation Approach TC O(N^2) SC O(N)
+/*class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int dp [] = new int[n]; // store LIS Result
+        // By Default For every element we need to set 1 
+        Arrays.fill(dp, 1); //  // skip it 
+        for(int current = 1; current<n ; current++){
+            for(int previous = 0; previous<current;previous++){
+                if(nums[previous] < nums[current]){
+                   
+                    // include it
+                    dp[current] = Math.max(dp[current], dp[previous]+1);
+                }
+            }
+        }
+        int answer = 1;
+        for(int val : dp){
+            answer = Math.max(val, answer);
+        }
+        return answer;
+        //return dp[dp.length-1];
+    }
+}
+*/
+// Approach - 2 Memoization 2D Array (DP Array) TC O(N^2) SC O(N^2)
+/*
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int dp[][] = new int[n][n+1];
+        for(int []row :dp){
+            Arrays.fill(row, -1);
+        }
+        return helper(0, -1, nums, dp);
+    }
+
+    int helper(int currentIndex, int prevIndex, int nums[], int [][]dp){
+            // Base case
+            if(currentIndex == nums.length){
+                return 0;
+            }
+            // Check is it already compute it 
+            if(dp[currentIndex][prevIndex+1]!=-1){
+                return dp[currentIndex][prevIndex+1];
+            }
+            int skip = helper(currentIndex+1, prevIndex, nums, dp);
+            int include = 0;
+            if(prevIndex == -1 || nums[currentIndex]>nums[prevIndex]){
+            include = 1 + helper(currentIndex + 1, currentIndex, nums, dp);
+        }
+        // compute so store it
+            dp[currentIndex][prevIndex+1] = Math.max(skip , include);
+            return dp[currentIndex][prevIndex+1];
+    }
+}
+*/
+
+// Approach - 1 Recursive Approach (Brute Force) - TLE TC (2^ N) SC O(N)
+/*class Solution {
+    public int lengthOfLIS(int[] nums) {
+        return helper(0, -1, nums);
+    }
+    int helper(int currentIndex, int prevIndex, int nums[]){
+        // Base case
+        if(currentIndex == nums.length){
+            return 0; 
+        }
+        // Choice - 1 Skip 
+        int skip = helper(currentIndex+1, prevIndex, nums);
+        // Choice - 2 Include nums[currentIndex]>nums[prevIndex]
+        int include = 0;
+        if(prevIndex == -1 || nums[currentIndex]>nums[prevIndex]){
+            include = 1 + helper(currentIndex + 1, currentIndex, nums);
+        }
+        return Math.max(skip, include);
+       
+    }  
+     
+}*/
