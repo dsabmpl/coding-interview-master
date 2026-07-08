@@ -1,0 +1,117 @@
+// Approach - 4 Space Optimise Approach
+// TC O(MXN) SC O(N)
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int []prev = new int[n+1]; // Prev Row
+        for(int i = 1; i<=m ; i++){
+            int [] curr = new int[n+1]; // Current Row
+            for(int j = 1; j<=n ; j++){
+                // Match Case
+                if(text1.charAt(i-1) == text2.charAt(j-1)){
+                    curr[j] = 1 + prev[j-1];
+                }
+                else{
+                    // No Match case
+                   curr[j] = Math.max( prev[j], curr[j-1]);
+                }
+            }
+            prev = curr; 
+        }
+        return prev[n];
+    }
+}
+
+
+// Approach - 3 Tabulation
+// TC O(MXN) SC O(MXN)
+/*
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int dp[][] = new int[m+1][n+1];
+        // base case fill with 0 - java int array by default 0 
+        for(int i = 1; i<=m ; i++){
+            for(int j = 1; j<=n ; j++){
+                // Match Case
+                if(text1.charAt(i-1) == text2.charAt(j-1)){
+                    dp[i][j] = 1 + dp[i-1][j-1]; // Diagonal
+                }
+                else{
+                    // No match
+                    int up = dp[i-1][j];
+                    int left = dp[i][j-1];
+                    int max = Math.max(up, left);
+                    dp[i][j] = max;
+                }
+            }
+        }
+        // in last cell we have length of lcs
+        return dp[m][n];
+
+    }
+}
+*/
+
+// Approach - 2 Memoization 
+// TC O(m x n) SC O(m x n)
+/*
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int m = text1.length();
+        int n = text2.length();
+        int [][]dp= new int[m][n];
+        for(int[] row : dp){
+            Arrays.fill(row, -1);
+        }
+        return helper(0, 0, text1, text2, dp);
+    }
+    int helper(int i, int j , String text1, String text2, int[][]dp){
+        // Base case
+         if(i == text1.length() || j== text2.length()){
+            return 0;
+        }
+        // Check is it already computed so dont compute return the result
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        // From here i need to compute 
+        // Match
+        // Match case
+        if(text1.charAt(i) == text2.charAt(j)){
+            return 1 + helper(i+1, j+1, text1, text2, dp);
+        }
+        // No Match Case Has 2 Choices
+        int choice1 = helper(i+1, j , text1, text2, dp); // skip the text1
+        int choice2 = helper(i , j+1,text1, text2, dp); // skip the text2
+        int max = Math.max(choice1, choice2);
+        dp[i][j] = max;
+        return dp[i][j];
+    }
+}
+*/
+// Approach - 1 Recursion TC (2^ N) SC O(text1.length() + text2.length())
+/*
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        return helper(0, 0 , text1, text2);
+    }
+    int helper(int i , int j, String text1, String text2){
+        // Base case - one of the string is exhausted
+        if(i == text1.length() || j== text2.length()){
+            return 0;
+        }
+        // Match case
+        if(text1.charAt(i) == text2.charAt(j)){
+            return 1 + helper(i+1, j+1, text1, text2);
+        }
+        // No Match Case Has 2 Choices
+        int choice1 = helper(i+1, j , text1, text2); // skip the text1
+        int choice2 = helper(i , j+1,text1, text2); // skip the text2
+        int max = Math.max(choice1, choice2);
+        return max;
+    }
+}
+*/
