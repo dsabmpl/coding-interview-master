@@ -1,0 +1,98 @@
+// Approach - 3 Tabulation
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int dp[][] = new int[m+1][n+1];
+        // fill the base case
+        for(int j = 0; j<=n ; j++){
+            dp[0][j] = j;
+        }
+        for(int i = 0 ; i<=m ; i++){
+            dp[i][0] = i;
+         }
+         for(int i = 1; i<=m ; i++){
+            for(int j = 1; j<=n ; j++){
+                // Match case
+                if(word1.charAt(i-1) == word2.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1]; // fill from diagonal
+                }
+                else{
+                    // no match
+                    dp[i][j] = 1 + Math.min(dp[i][j-1], Math.min(dp[i-1][j], dp[i-1][j-1]));
+                }
+            }
+         }
+         return dp[m][n];
+    }
+}
+
+
+// Approach - 2 Memoization
+// TC O(MXN) SC (MXN)
+/*
+class Solution {
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int [][] dp = new int[m][n];
+        for(int []row: dp){
+            Arrays.fill(row, -1);
+        }
+        return helper(0,0, word1, word2, dp);
+    }
+    int helper(int i, int j, String word1, String word2, int [][] dp){
+        // Base case
+        if(i == word1.length()){
+            return word2.length() - j; // word1 exhaust , insert the remaining words2 char
+        }
+        if(j == word2.length()){
+            return word1.length() - i ; 
+        }
+
+        // Already Computed?
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+
+        // Do Compute
+        // Match case
+        if(word1.charAt(i) == word2.charAt(j)){
+            return helper(i+1, j+1 , word1, word2, dp);
+        }
+        // No Match Case - try all 3 operations (I , D, R)
+        int insert = helper(i, j+1 , word1, word2, dp);
+        int delete = helper(i+1, j , word1, word2, dp);
+        int replace = helper(i+1, j+1 , word1, word2, dp);
+        int result =  1 +  Math.min(insert , Math.min(delete, replace));
+        dp[i][j] = result;
+        return dp[i][j];
+     }
+}
+*/
+// Approach -1 Recursion Approach
+/*
+class Solution {
+    public int minDistance(String word1, String word2) {
+        return helper(0, 0 , word1, word2);
+    }
+    int helper(int i, int j, String word1, String word2){
+        // Base case
+        if(i == word1.length()){
+            return word2.length() - j; // word1 exhaust , insert the remaining words2 char
+        }
+        if(j == word2.length()){
+            return word1.length() - i ; 
+        }
+        // Match case
+        if(word1.charAt(i) == word2.charAt(j)){
+            return helper(i+1, j+1 , word1, word2);
+        }
+        // No Match Case - try all 3 operations (I , D, R)
+        int insert = helper(i, j+1 , word1, word2);
+        int delete = helper(i+1, j , word1, word2);
+        int replace = helper(i+1, j+1 , word1, word2);
+        return 1 +  Math.min(insert , Math.min(delete, replace));
+    }
+}
+*/
