@@ -1,0 +1,79 @@
+// Approach - 2 Greedy Algo TC O(N) SC O(1)
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+            // count five and ten
+            int five = 0;
+            int ten = 0 ;
+            for(int bill : bills){
+                if(bill == 5){
+                    five++;
+                }
+                else if(bill == 10){
+                    if(five>=1){
+                        five--;
+                        ten++;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    // Rs 20 
+                    // Option 1 - ten + five
+                    if(ten>=1 && five>=1){
+                        ten--;
+                        five--;
+                    }
+                    // only five (3)
+                    else if(five>=3){
+                        five = five - 3;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+            // all bill settle
+            return true;
+    }
+}
+// Approach - 1 Brute Force TC (2^n) n Rs 20 SC O(N) 
+/*class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        return helper(bills, 0, 0 , 0);
+    }
+    // 2 choice (rs 5 5 5 rs 10 5)
+    boolean helper(int []bills, int index, int five, int ten){
+        // Base case reach (All Customer bill settle)
+        if(index == bills.length){
+            return true;
+        }
+            int currentBill = bills[index];
+            if(currentBill == 5){
+                return helper(bills , index + 1, five + 1 , ten);
+            }
+            else if (currentBill == 10){
+                if(five>=1){
+                    return helper(bills, index + 1 , five - 1 , ten + 1);
+                }
+                // no five 
+                return false;
+            }
+            else{
+                // bill is 20 Rs
+                // Option 1 - i give 10 first and then 5 
+                if(ten>=1 && five>=1){
+                    if(helper(bills, index+ 1, five - 1, ten-1)){
+                        return true;
+                    }
+                }
+                // Option - 2 
+                if(five>=3){
+                    if(helper(bills, index + 1, five - 3 , ten)){
+                        return true;
+                    }
+                }
+                return false;
+            }
+    }
+}*/
