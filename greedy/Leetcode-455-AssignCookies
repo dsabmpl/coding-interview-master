@@ -1,0 +1,47 @@
+// Approach - 2 Greedy Algo TC O(N log N ) SC O(1)
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);  // N Log N
+        Arrays.sort(s);
+        // Maintain 2 Pointer
+        int i = 0;
+        int j = 0;
+        // maintain count
+        int count = 0;
+        while(i<g.length && j<s.length){
+            if(s[j]>=g[i]){
+                i++;
+                j++;
+                count++;
+            }
+            else{
+                j++;
+            }
+        }
+        return count;
+
+    }
+}
+
+
+// // Approach - 1 (Brute Force) TC O(n^2) SC O(n)
+// class Solution {
+//     public int findContentChildren(int[] g, int[] s) {
+//         // Small Greed Comes first
+//         Arrays.sort(g); // Greed wise sort in ascending order
+//         Arrays.sort(s); // small cookie comes first
+//         boolean[] used = new boolean[s.length]; // this mark which cookie consumed
+//         int count = 0; // child satisfy
+//         for(int i = 0 ; i<g.length; i++){
+//             for(int j = 0; j<s.length; j++){
+//                 if(!used[j] && s[j]>=g[i]){
+//                     count++;
+//                     used[j] = true; 
+//                     break;
+//                 }
+//             }
+//         }   
+//         return count;     
+//     }
+
+// }
