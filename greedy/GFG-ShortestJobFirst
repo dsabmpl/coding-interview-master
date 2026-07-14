@@ -1,0 +1,16 @@
+class Solution {
+    static int solve(int bt[]) {
+        // code here
+        Arrays.sort(bt); 
+        int waitingTime = 0;
+        int totalWaitingTime  = 0;
+        int numberOfTask = bt.length;
+        for(int i = 1; i<numberOfTask; i++){
+            waitingTime = waitingTime + bt[i-1];
+            totalWaitingTime = totalWaitingTime + waitingTime;
+            
+        }
+        return totalWaitingTime /  numberOfTask;
+        
+    }
+}
