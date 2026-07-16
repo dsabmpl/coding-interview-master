@@ -1,0 +1,60 @@
+import java.util.*;
+
+class Solution {
+    
+    public ArrayList<Integer> jobSequencing(int[] deadline, int[] profit) {
+        
+        int n = deadline.length; // contains total number of jobs
+        
+       
+        Integer[] jobIndex = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            jobIndex[i] = i;
+        }
+        
+        //  Sort jobs by DEADLINE in ASCENDING order
+        
+        Arrays.sort(jobIndex, (a, b) -> deadline[a] - deadline[b]);
+        
+        // Maintain Min-Heap (Priority Queue) to store profits of
+       
+        // Top of heap = smallest profit among selected jobs.
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+       
+        for (int i = 0; i < n; i++) {
+            
+            int currentJob = jobIndex[i];
+            int currentDeadline = deadline[currentJob];
+            int currentProfit = profit[currentJob];
+            
+            
+            minHeap.offer(currentProfit);
+            
+            
+            if (minHeap.size() > currentDeadline) {
+                // Remove the LEAST profitable job from our selection
+                
+                minHeap.poll();
+            }
+           
+        }
+        
+       
+        int jobsDone = minHeap.size();
+        int maxProfit = 0;
+        for (int p : minHeap) {
+            maxProfit += p;
+        }
+        
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(jobsDone);
+        result.add(maxProfit);
+        
+        return result;
+    }
+    
+  
+}
+
