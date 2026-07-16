@@ -1,0 +1,36 @@
+class Solution {
+    public int minPlatform(int arr[], int dep[]) {
+        
+        int n = arr.length; 
+       
+        Arrays.sort(arr); 
+        // sort all arrival times, smallest first
+
+        Arrays.sort(dep); 
+        // sort all departure times, smallest first
+        int i = 0; 
+        int j = 0; 
+
+        int platformsNeeded = 0; 
+        int maxPlatforms = 0; 
+        while (i < n && j < n) {
+            
+            if (arr[i] <= dep[j]) {
+                platformsNeeded++;   
+                maxPlatforms = Math.max(maxPlatforms, platformsNeeded);   
+                i++;                 
+            } else {
+                
+                platformsNeeded--;   
+                // one less train at the station now
+
+                j++;                 
+                
+            }
+        }
+
+        return maxPlatforms; 
+       
+    }
+}
+
