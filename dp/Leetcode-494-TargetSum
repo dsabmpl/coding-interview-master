@@ -1,0 +1,224 @@
+//Approach - 1
+class Solution {
+
+  public int findTargetSumWays(int[] nums, int target) {
+    // start from index 0 with current sum = 0
+    return solve(0, 0, nums, target);
+  }
+
+  int solve(int index, int sum, int[] nums, int target) {
+
+    // BASE CASE — used all numbers
+    if (index == nums.length) {
+      // did we hit the target? yes = 1 way, no = 0 ways
+      return (sum == target) ? 1 : 0;
+    }
+
+    // CHOICE 1 — put + in front of nums[index]
+    int add = solve(index + 1, sum + nums[index], nums, target);
+
+    // CHOICE 2 — put − in front of nums[index]
+    int sub = solve(index + 1, sum - nums[index], nums, target);
+
+    // total ways = ways with + PLUS ways with −
+    return add + sub;
+  }
+}
+//TC O(2^N)  SC O(1)
+
+
+//Approach - 2
+
+class Solution {
+
+  public int findTargetSumWays(int[] nums, int target) {
+    // HashMap — key="index,sum", value=ways from that state
+    Map<String, Integer> memo = new HashMap<>();
+    return solve(0, 0, nums, target, memo);
+  }
+
+  int solve(int index, int sum,
+            int[] nums, int target,
+            Map<String, Integer> memo) {
+
+    // BASE CASE — used all numbers
+    if (index == nums.length)
+      return (sum == target) ? 1 : 0;
+
+    // create unique key for this state
+    String key = index + "," + sum;
+
+    // CHECK NOTEBOOK — already solved this state?
+    if (memo.containsKey(key)) return memo.get(key);
+
+    // CHOICE 1 — add nums[index]
+    int add = solve(index+1, sum+nums[index], nums, target, memo);
+
+    // CHOICE 2 — subtract nums[index]
+    int sub = solve(index+1, sum-nums[index], nums, target, memo);
+
+    // STORE result in map
+    memo.put(key, add + sub);
+    return memo.get(key);
+  }
+}
+
+TC O(N * S)
+SC O(n*S)
+
+
+//Approach - 3 Tabulation
+
+// // class Solution {
+
+// //   public int findTargetSumWays(int[] nums, int target) {
+// //     // start from index 0 with current sum = 0
+// //     return solve(0, 0, nums, target);
+// //   }
+
+// //   int solve(int index, int sum, int[] nums, int target) {
+
+// //     // BASE CASE — used all numbers
+// //     if (index == nums.length) {
+// //       // did we hit the target? yes = 1 way, no = 0 ways
+// //       return (sum == target) ? 1 : 0;
+// //     }
+
+// //     // CHOICE 1 — put + in front of nums[index]
+// //     int add = solve(index + 1, sum + nums[index], nums, target);
+
+// //     // CHOICE 2 — put − in front of nums[index]
+// //     int sub = solve(index + 1, sum - nums[index], nums, target);
+
+// //     // total ways = ways with + PLUS ways with −
+// //     return add + sub;
+// //   }
+// // }
+
+// class Solution {
+
+//   public int findTargetSumWays(int[] nums, int target) {
+//     // HashMap — key="index,sum", value=ways from that state
+//     Map<String, Integer> memo = new HashMap<>();
+//     return solve(0, 0, nums, target, memo);
+//   }
+
+//   int solve(int index, int sum,
+//             int[] nums, int target,
+//             Map<String, Integer> memo) {
+
+//     // BASE CASE — used all numbers
+//     if (index == nums.length)
+//       return (sum == target) ? 1 : 0;
+
+//     // create unique key for this state
+//     String key = index + "," + sum;
+
+//     // CHECK NOTEBOOK — already solved this state?
+//     if (memo.containsKey(key)) return memo.get(key);
+
+//     // CHOICE 1 — add nums[index]
+//     int add = solve(index+1, sum+nums[index], nums, target, memo);
+
+//     // CHOICE 2 — subtract nums[index]
+//     int sub = solve(index+1, sum-nums[index], nums, target, memo);
+
+//     // STORE result in notebook
+//     memo.put(key, add + sub);
+//     return memo.get(key);
+//   }
+// }
+
+
+class Solution {
+  public int findTargetSumWays(int[] nums, int target) {
+    int n = nums.length;
+
+    // totalSum = max possible sum (all +)
+    int total = 0;
+    for (int x : nums) total += x;
+
+    // target impossible — out of range
+    if (Math.abs(target) > total) return 0;
+
+    // offset shifts all sums to positive indices
+    // sum=0 sits at index 'total' in array
+    int offset = total;
+    int size = 2 * total + 1; // covers -total to +total
+
+    // dp[i][j] = ways to reach sum (j-offset) using first i numbers
+    int[][] dp = new int[n + 1][size];
+
+    // BASE CASE — 0 numbers used, sum=0 — exactly 1 way
+    dp[0][offset] = 1;
+
+    // fill row by row — one number at a time
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < size; j++) {
+
+        // skip if no ways to be at this sum
+        if (dp[i][j] == 0) continue;
+
+        // ADD nums[i] — move RIGHT by nums[i]
+        dp[i+1][j + nums[i]] += dp[i][j];
+
+        // SUBTRACT nums[i] — move LEFT by nums[i]
+        dp[i+1][j - nums[i]] += dp[i][j];
+      }
+    }
+
+    // answer = ways to reach target after all numbers
+    return dp[n][target + offset];
+  }
+}
+
+//TC O(N * S)  SC O(N*S)
+
+
+//Approach - 4 Space Optimise
+
+class Solution {
+  public int findTargetSumWays(int[] nums, int target) {
+    int n = nums.length;
+    int total = 0;
+    for (int x : nums) total += x;
+
+    // target can never be reached
+    if (Math.abs(target) > total) return 0;
+
+    // offset = shift so negatives become valid indices
+    int offset = total;
+    int size = 2 * total + 1;
+
+    // prev = base case — 0 numbers used, sum=0 → 1 way
+    int[] prev = new int[size];
+    prev[offset] = 1;
+
+    // process each number one by one
+    for (int i = 0; i < n; i++) {
+
+      // FRESH curr — all zeros. MUST be inside loop.
+      int[] curr = new int[size];
+
+      for (int j = 0; j < size; j++) {
+        if (prev[j] == 0) continue;
+
+        // +nums[i] — spread RIGHT
+        curr[j + nums[i]] += prev[j];
+
+        // -nums[i] — spread LEFT
+        curr[j - nums[i]] += prev[j];
+      }
+
+      // slide window — curr is new prev
+      prev = curr;
+    }
+
+    // answer lives at target+offset in final prev
+    return prev[target + offset];
+  }
+}
+
+//TC O(N* S)
+SC O(S)
+
